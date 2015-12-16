@@ -1,0 +1,62 @@
+\documentclass{paper}
+\usepackage[utf8]{inputenc}
+\usepackage{bm}
+\usepackage{natbib}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\title{Short note on recurrent neural networks}
+\author{Grzegorz Chrupała}
+
+\begin{document}
+\maketitle
+\section{Simple Recurrent Nets}
+Simple recurrent nets (SRN) were introduced by
+\cite{elman1990finding,elman1991distributed}:
+  \begin{equation}
+    \label{eq:srn}
+    h_t = \sigma(Wx_t + Uh_{t-1})
+  \end{equation}
+where $\sigma$ is an elementwise nonlinearity such as the inverse
+logit:
+\[
+\sigma(z) = \frac{1}{1+\exp(-z)}
+\]
+
+\section{Long Short-term Memory}
+Long Short-Term Memory networks were introduced by
+\cite{hochreiter1997long} in order to remedy problems  with the
+backpropagation in SRN. The formulation is the following:
+
+\begin{align*}
+  i_t = & \sigma(W_{i}x_t + U_{i}h_{t-1}) \\
+  f_t = & \sigma(W_{f}x_t + U_{f}h_{t-1}) \\
+  o_t = & \sigma(W_{o}x_t + U_{o}h_{t-1}) \\
+  c_t = & f_t \odot c_{t-1} + i_t \odot \tanh(W_{c}x_t + U_{c}h_{t-1}) \\
+  h_t = & o_t \odot c_t \\
+\end{align*}
+where $\odot$ is elementwise multiplication.
+As can be seen, at each time step, LSTM has two separate states: the
+hidden state $h_t$, and the memory cell $c_t$. Three gates control whether
+to forget the current cell value ($f$), whether it should read its input
+($i$)  and whether to output the new cell value ($o$). This video
+lecture by Hinton has a good explanation of LSTMs: \url{https://www.youtube.com/watch?v=lsV5rFbs-K0&list=PLnnr1O8OWc6YM16tj9pdhBZOS9tDktNrx&index=5}
+\section{Gated Recurrent Units}
+Gated Recurrent
+Units (GRU) were first introduced by \cite{cho2014properties} and
+\cite{chung2014empirical} as a simpler alternative to LSTMs.
+In a GRU, activation at time $t$ is the linear combination of previous
+activation, and candidate activation:
+\begin{align*}
+   h_t =& (1 - z_t)\odot h_{t-1} + z_t \odot \tilde{h}_t \\
+   z_t =& \sigma_s(W_z x_t + U_z h_{t-1}) \\
+   \tilde{h}_t =& \sigma(W x_t + U(r_t \odot h_{t-1})) \\
+   r_t =& \sigma_s(W_r x_t + U_r h_{t-1})
+\end{align*}
+The partially linear
+dependence between current and previous state makes it easier for
+these networks to be trained via backpropagation.
+
+
+\bibliography{biblio}
+\bibliographystyle{apalike}
+\end{document}
