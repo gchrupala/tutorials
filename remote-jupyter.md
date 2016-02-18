@@ -14,4 +14,4 @@ server, follow these steps:
 
       ipython notebook --port 5558
 
-- Open a browser and go to http://localhost:5558/
+- Open a browser and go to ``http://localhost:5558/``
