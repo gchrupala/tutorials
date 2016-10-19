@@ -12,6 +12,6 @@ server, follow these steps:
 - On the remote server (yellow in this case) start up ipython (or
   jupyter), and specify the chosen port:
 
-      ipython notebook --port 5558
+      ipython notebook --port 5558 --no-browser
 
 - Open a browser and go to ``http://localhost:5558/``
